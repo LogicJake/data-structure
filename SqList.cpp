@@ -79,7 +79,7 @@ Status LocateElem(SqList L,ElemType e)
 }
 Status PriorElem(SqList L,ElemType cur_e,ElemType &pre_e)
 {
-	if (LocateElem(L,cur_e)!=0&&LocateElem(L,cur_e)!=1)
+	if (LocateElem(L,cur_e)!=-1&&LocateElem(L,cur_e)!=0)
 	{
 		pre_e = L.elem[LocateElem(L,cur_e)-1];
 		return OK;
@@ -89,7 +89,7 @@ Status PriorElem(SqList L,ElemType cur_e,ElemType &pre_e)
 }
 Status NextElem(SqList L,ElemType cur_e,ElemType &next_e)
 {
-	if (LocateElem(L,cur_e)!=0&&LocateElem(L,cur_e)!=L.length-1)
+	if (LocateElem(L,cur_e)!=-1&&LocateElem(L,cur_e)!=L.length-1)
 	{
 		next_e = L.elem[LocateElem(L,cur_e)+1];
 		return OK;
@@ -145,7 +145,8 @@ void ListTraverse(SqList L)
 	for (int i = 0; i <L.length;i++)
 		printf("%d\n",L.elem[i]);
 }
-Status createList(SqList &L){
+Status createList(SqList &L)
+{
     int i;
   	InitList(L);
     for(i = 0; i < 10; i++){
