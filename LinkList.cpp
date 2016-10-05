@@ -26,11 +26,6 @@ Status InitList(LinkList *L)
 }
 void DestroyList(LinkList *L)
 {
-	free (*L);
-	*L=NULL;
-}
-Status ClearList(LinkList *L)
-{ 
 	LinkList p,q;
 	p=(*L)->next;           /*  p指向第一个结点 */
 	while(p)                /*  没到表尾 */
@@ -39,7 +34,19 @@ Status ClearList(LinkList *L)
 		free(p);
 		p=q;
 	}
-	(*L)->next=NULL;        /* 头结点指针域为空 */
+	free(*L);        /* 释放头节点的空间 */
+}
+Status ClearList(LinkList *L)/*只留下头节点，其余释放*/
+{ 
+	LinkList p,q;
+	p=(*L)->next;           /*  p指向第一个结点 */
+	while(p)                /*  没到表尾 */
+	{
+		q=p->next;
+		free(p);
+		p=q;
+	}			
+	(*L)->next=NULL; 
 	return OK;
 }
 Status ListEmpty(LinkList L)
@@ -62,11 +69,7 @@ int ListLength(LinkList L)
 }
 Status GetElem(LinkList L,int i,ElemType *e)
 {
-/*	if (i>0&&i<ListLength(L))
-	{
-		printf("查找的位置不正确\n");
-	}
-*/
+
 	int j;
 	LinkList p;		/* 声明一结点p */
 	p = L->next;		/* 让p指向链表L的第一个结点 */
@@ -202,14 +205,4 @@ void ListTraverse(LinkList L)
         p=p->next; 
     }    
 }
-int main()
-{
-	LinkList L;//ͷָ???
-	LinkList *LL=&L; 
-	InitList(LL);
-	int e;
-	printf("%d",ListInsert(LL,1,1));
-	printf("%d",ListInsert(LL,2,2));
-	printf("%d",ListInsert(LL,3,3));
-	printf("%d",ListInsert(LL,4,4));
-}
+
