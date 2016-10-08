@@ -143,7 +143,7 @@ Status ListDelete(SqList &L,int i,ElemType &e)
 void ListTraverse(SqList L)
 {
 	for (int i = 0; i <L.length;i++)
-		printf("%d\n",L.elem[i]);
+		printf("%d ",L.elem[i]);
 }
 Status createList(SqList &L)
 {
@@ -155,4 +155,14 @@ Status createList(SqList &L)
     L.length = 10;
     return OK;
 } 
-
+void reverse(SqList &L)
+{
+	int i,j;
+	int temp;
+	for (int i = 0,j = L.length - 1; i < j; i++,j--)
+	{
+		temp = L.elem[i];
+		L.elem[i] = L.elem[j];
+		L.elem[j] = temp;
+	}
+}

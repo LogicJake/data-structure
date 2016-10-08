@@ -218,4 +218,15 @@ void ListTraverse(LinkList L)
         p=p->next; 
     }    
 }
-
+void reverse(LinkList &L)
+{
+	LinkList p,q;
+	p = L->next;L->next = NULL;
+	while(p)
+	{
+		q = p->next;
+		p->next = L->next;
+		L->next = p;
+		p = q;
+	}
+}
