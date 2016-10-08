@@ -16,37 +16,37 @@ typedef struct Node
     struct Node *next;
 }Node;
 typedef struct Node *LinkList; 
-Status InitList(LinkList *L) 
+Status InitList(LinkList &L) 
 { 
-    *L=(LinkList)malloc(sizeof(Node)); /* 产生头结点,并使L指向此头结点 */
-    if(*L==NULL) /* 存储分配失败 */
+    L=(LinkList)malloc(sizeof(Node)); /* 产生头结点,并使L指向此头结点 */
+    if(L==NULL) /* 存储分配失败 */
             return ERROR;
-    (*L)->next=NULL; /* 指针域为空 */
+    (L)->next=NULL; /* 指针域为空 */
     return OK;
 }
-void DestroyList(LinkList *L)
+void DestroyList(LinkList &L)
 {
 	LinkList p,q;
-	p=(*L)->next;           /*  p指向第一个结点 */
+	p=L->next;           /*  p指向第一个结点 */
 	while(p)                /*  没到表尾 */
 	{
 		q=p->next;
 		free(p);
 		p=q;
 	}
-	free(*L);        /* 释放头节点的空间 */
+	free(L);        /* 释放头节点的空间 */
 }
-Status ClearList(LinkList *L)/*只留下头节点，其余释放*/
+Status ClearList(LinkList &L)/*只留下头节点，其余释放*/
 { 
 	LinkList p,q;
-	p=(*L)->next;           /*  p指向第一个结点 */
+	p=L->next;           /*  p指向第一个结点 */
 	while(p)                /*  没到表尾 */
 	{
 		q=p->next;
 		free(p);
 		p=q;
 	}			
-	(*L)->next=NULL; 
+	L->next=NULL; 
 	return OK;
 }
 Status ListEmpty(LinkList L)
@@ -159,10 +159,10 @@ Status NextElem(LinkList L,ElemType cur_e,ElemType &next_e)
 		return ERROR;
 	}
 }
-Status ListInsert(LinkList *L,int i,ElemType e)
+Status ListInsert(LinkList &L,int i,ElemType e)
 {
 	LinkList p,s;
-	p = *L;   
+	p = L;   
 	int j = 0;
 	while (p && j < i-1)     /* 寻找第i-1个结点 */
 	{
@@ -177,11 +177,11 @@ Status ListInsert(LinkList *L,int i,ElemType e)
 	p->next = s;          /* 将s赋值给p的后继 */
 	return OK;
 }
-Status ListDelete(LinkList *L,int i,ElemType &e)
+Status ListDelete(LinkList L,int i,ElemType &e)
 {
 	int j;
 	LinkList p,q;
-	p = *L;
+	p = L;
 	j = 0;
 	while (p->next && j < i-1)	/* 寻找前驱，即第i-1个元素 */
 	{
@@ -195,6 +195,19 @@ Status ListDelete(LinkList *L,int i,ElemType &e)
 	e = q->data;               /* 将q结点中的数据给e */
 	free(q);                    /* 让系统回收此结点，释放内存 */
 	return OK;
+}
+void creatList(LinkList &L)
+{
+	int i;
+	LinkList p;
+	InitList(L);
+	for (i = 9; i >=0; i--)
+	{
+		p = (LinkList)malloc(sizeof(Node));
+		p->data = i;
+		p->next = L->next;
+		L->next = p;
+	}
 }
 void ListTraverse(LinkList L)
 {
