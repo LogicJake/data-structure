@@ -166,3 +166,14 @@ void reverse(SqList &L)
 		L.elem[j] = temp;
 	}
 }
+Status DeleteK(SqList &a,int i,int k)
+{
+	if(i<1||k<0||i+k-1>a.length)
+		return INFEASIBLE;
+	int count;
+	for ( count= 0; count < a.length-k; ++count)
+	{
+		a.elem[i-1+count] = a.elem[i-1+k+count];
+	}
+	a.length-=k;
+}
