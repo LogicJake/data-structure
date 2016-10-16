@@ -122,6 +122,33 @@ Status ListInsert(SqList &L,int i,ElemType e)
 	else 
 		return ERROR;
 }
+Status ListInsert(SqList &L,ElemType e)
+{
+	int i,j;
+	for (j = 0; j < L.length; ++j)
+	{
+		if(L.elem[j]>=e)
+		{
+			i=j;
+			break;
+		}
+	}
+		if (L.length == L.listsize)
+		{
+			ElemType *newbase = (ElemType *)realloc(L.elem,(L.listsize+LISTINCREMENT)*sizeof (ElemType));
+    		if (!newbase) exit(OVERFLOW);  // 存储分配失败           
+    		L.elem = newbase;                // 新基址
+   			L.listsize += LISTINCREMENT; // 增加存储容量
+		}
+		ElemType *q = &(L.elem[i]);
+		for (ElemType *p = &(L.elem[L.length-1]);p>=q;p--)
+		{
+			*(p+1)=*p;
+		}
+		*q=e;
+		L.length++;
+		return OK;	
+}
 Status ListDelete(SqList &L,int i,ElemType &e)
 {
 
