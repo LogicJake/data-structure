@@ -230,3 +230,33 @@ void reverse(LinkList &L)
 		p = q;
 	}
 }
+void InsertSort(LinkList &L)
+{
+	LinkList p,q,temp,p_prior;
+	LinkList first;
+	first = L->next->next;
+	L->next->next = NULL;
+	while(first)
+	{
+		p_prior = L;
+		p = p_prior->next;		//重置为L的表头
+		temp = first;
+		first = first->next;
+		temp->next = NULL;
+		while(p->next!=NULL&&p->data < temp->data)
+		{
+			p_prior = p;
+			p = p->next;
+		}
+		if(p->data >= temp->data)
+		{
+			temp->next = p_prior->next;
+			p_prior->next = temp;
+		}
+		else 
+		{
+			temp->next = NULL;
+			p->next = temp;
+		}
+	}
+}
