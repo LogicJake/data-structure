@@ -204,3 +204,18 @@ Status DeleteK(SqList &a,int i,int k)
 	}
 	a.length-=k;
 }
+void InsertSort(SqList &L)
+{
+	int i,j;
+	ElemType temp;
+	for(i=1; i<L.length; ++i)
+	{
+		if(L.elem[i]<L.elem[i-1])
+		{
+			temp = L.elem[i];
+			for(j=i-1;L.elem[j]>=temp&&j>=0;--j)
+				L.elem[j+1]=L.elem[j];
+			L.elem[j+1] = temp;
+		}
+	 } 
+}
