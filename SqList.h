@@ -219,3 +219,26 @@ void InsertSort(SqList &L)
 		}
 	 } 
 }
+Status MergeList(SqList &A,SqList &B)
+{
+	int i,j,flag;
+	ElemType e;
+	for (int i = 0; i < B.length; ++i)
+	{	
+		e = B.elem[i];				
+		for (j = 0; j < A.length; ++j)
+		{
+			if(A.elem[j]>e)			//寻找插入点
+			{
+				flag = j;
+				ListInsert(A,flag,e);
+				break;
+			}
+			if (A.elem[j] == e)		//剔除重复元素
+				break;
+		}
+		if(j == A.length)
+			ListInsert(A,A.length,e);
+	}
+	return OK;	
+}
