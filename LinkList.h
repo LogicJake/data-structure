@@ -260,3 +260,32 @@ void InsertSort(LinkList &L)
 		}
 	}
 }
+Status MergeList(LinkList &A,LinkList &B)
+{
+	int i,j;
+	ElemType e;
+	LinkList p = B->next;
+	LinkList q;
+	while(p)
+	{
+		e = p->data;
+		j = 1;
+		q = A->next;				
+		while(q)
+		{
+			if(q->data>e)			//寻找插入点
+			{
+				ListInsert(A,j,e);
+				break;
+			}
+			if (q->data == e)		//剔除重复元素
+				break;
+			j++;
+			q = q->next;
+		}
+		if(q == NULL)
+			ListInsert(A,j,e);
+		p = p->next;
+	}
+	return OK;	
+}
