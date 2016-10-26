@@ -260,32 +260,6 @@ void InsertSort(LinkList &L)
 		}
 	}
 }
-Status LOCATE(LinkList &L,int x)
-{
-	LinkList p,q;
-	p = L->next;
-	q = L->next;
-	while(p->data!=x&&p!=L)
-		p = p->next;
-	if(p == L)
-		return ERROR;
-	else
-	{
-		p->freq++;
-		while(q!=L&&q->freq>=p->freq)
-			q = q->next;
-		if(q!=p->next)
-		{
-			p->pre->next = p->next;
-			p->next->pre = p->pre;
-			p->pre = q->pre;
-			q->pre->next = p;
-			q->pre = p;
-			p->next = q;	
-		} 	
-	} 
-	return OK; 
-}
 Status MergeList(LinkList &A,LinkList &B)
 {
 	int i,j;
