@@ -149,10 +149,6 @@ void PostOrderTraverse_recursion(BiTree T)    //µÝ¹éºóÐò±éÀú
         printf("%c ",T->data); 
     }    
 } 
-Status LevelOrderTraverse(BiTree T)
-{
-	
-}
 int main()
 {
 	BiTree T;
