@@ -122,6 +122,33 @@ void InOrderTraverse(BiTree T)
 		}
 	}
 }
+void PreOrderTraverse_recursion(BiTree T)
+{
+	if(T!=NULL)
+    {
+        printf("%c ",T->data);
+        PreOrderTraverse_recursion(T->lchild);
+        PreOrderTraverse_recursion(T->rchild);
+    }
+}
+void InOrderTraverse_recursion(BiTree T)      //µÝ¹éÖÐÐò±éÀú
+{
+    if(T!=NULL)
+    {
+        InOrderTraverse_recursion(T->lchild);
+        printf("%c ",T->data);
+        InOrderTraverse_recursion(T->rchild);
+    }
+}
+void PostOrderTraverse_recursion(BiTree T)    //µÝ¹éºóÐò±éÀú
+{
+    if(T!=NULL)
+    {
+        PostOrderTraverse_recursion(T->lchild);
+        PostOrderTraverse_recursion(T->rchild);
+        printf("%c ",T->data); 
+    }    
+} 
 Status LevelOrderTraverse(BiTree T)
 {
 	
@@ -132,7 +159,13 @@ int main()
 	CreateBiTree(T);
 	PreOrderTraverse(T);
 	printf("\n");
+	PreOrderTraverse_recursion(T);
+	printf("\n");
 	InOrderTraverse(T);
+	printf("\n");
+	InOrderTraverse_recursion(T);
+	printf("\n");
+	PostOrderTraverse_recursion(T);
 	return 0;
 }
 //ABC  DE G  F   
