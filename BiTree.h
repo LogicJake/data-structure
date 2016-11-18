@@ -1,14 +1,12 @@
-#include <stdio.h>
+#include <iostream>
 #include <stdlib.h>
-#define MAXSIZE 12500
-#define MAXRC 150
+#include <stack>
+using namespace std;
 #define TRUE 1
 #define FALSE 0
 #define OK 1
 #define ERROR 0
 #define OVERFLOW -2
-#define STACK_INIT_SIZE 100
-#define STACKINCREMENT 10
 typedef char ElemType;
 typedef int Status;
 typedef struct BiTNode
@@ -16,54 +14,11 @@ typedef struct BiTNode
 	ElemType data;
 	struct BiTNode *lchild, *rchild;
 }BiTNode, *BiTree;
-typedef BiTree SElemType;
-typedef struct 
-{
-	SElemType *base;
-	SElemType *top;
-	int stacksize;
-}SqStack;
-Status InitStack(SqStack &S)
-{
-	S.base = (SElemType *)malloc(STACK_INIT_SIZE * sizeof(SElemType));
-	if (!S.base)
-		exit(OVERFLOW);
-	S.top = S.base;
-	S.stacksize = STACK_INIT_SIZE;
-	return OK;
-}
-Status StackEmpty(SqStack S)
-{
-	if (S.base&&S.top == S.base)
-		return TRUE;
-	else
-		return FALSE;
-}
-Status Push(SqStack &S, SElemType e)
-{
-	if (S.top - S.base >= S.stacksize)
-	{
-		S.base = (SElemType *)realloc(S.base, (S.stacksize + STACKINCREMENT)*sizeof(SElemType));
-		if (!S.base)
-			exit(OVERFLOW);
-		S.top = S.base + S.stacksize;
-		S.stacksize += STACKINCREMENT;
-	}
-	*S.top = e;
-	S.top++;
-	return OK;
-}
-Status Pop(SqStack &S, SElemType &e)
-{
-	if (S.top == S.base)
-		return ERROR;
-	else
-	{
-		S.top--;
-		e = *(S.top);
-		return OK;
-	}
-}
+typedef struct
+{	
+	BiTree ptr; 
+	bool tag;		//0为左子数 1为右子树 
+}stacknode;
 Status CreateBiTree(BiTree &T)
 {
 	char ch;
@@ -82,45 +37,75 @@ Status CreateBiTree(BiTree &T)
 }
 void PreOrderTraverse(BiTree T)
 {
-	SqStack s;
-	InitStack(s);
+	stack<BiTree> s;
 	BiTree p;
 	p = T;
-	while(p != NULL||!StackEmpty(s))
+	while(p != NULL||!s.empty())
 	{
 		while(p != NULL)
 		{
 			printf("%c ", p->data);
-			Push(s,p);
+			s.push(p);
 			p = p->lchild;
 		}
-		if(!StackEmpty(s))
+		if(!s.empty())
 		{
-			Pop(s,p);
+			p = s.top();
+			s.pop();
 			p = p->rchild;
 		}
 	}
 }
 void InOrderTraverse(BiTree T)
 {
-	SqStack s;
-	InitStack(s);
+	stack<BiTree> s;
 	BiTree p;
 	p = T;
-	while(p != NULL||!StackEmpty(s))
+	while(p != NULL||!s.empty())
 	{
 		while(p != NULL)
 		{
-			Push(s,p);
+			s.push(p);
 			p = p->lchild;
 		}
-		if(!StackEmpty(s))
+		if(!s.empty())
 		{
-			Pop(s,p);
+			p = s.top();
+			s.pop();
 			printf("%c ", p->data);
 			p = p->rchild;
 		}
 	}
+}
+void PostOrderTraverse(BiTree T)
+{
+	stacknode x;
+	stack<stacknode> s;
+	BiTree p;
+	p = T;
+	do
+	{
+		while(p != NULL)
+		{
+			x.ptr = p;
+			x.tag = 0;
+			s.push(x);
+			p = p->lchild;
+		}
+		while(!s.empty() && s.top().tag == 1)
+		{
+			x.ptr = s.top().ptr;
+			x.tag = s.top().tag;
+			s.pop();
+			p = x.ptr;
+			printf("%c ",p->data);
+		}
+		if(!s.empty())
+		{
+			s.top().tag = 1;
+			p = s.top().ptr->rchild;
+		}
+	}while(!s.empty());
 }
 void PreOrderTraverse_recursion(BiTree T)
 {
@@ -160,6 +145,8 @@ int main()
 	InOrderTraverse(T);
 	printf("\n");
 	InOrderTraverse_recursion(T);
+	printf("\n");
+	PostOrderTraverse(T);
 	printf("\n");
 	PostOrderTraverse_recursion(T);
 	return 0;
