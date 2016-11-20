@@ -1,6 +1,7 @@
 #include <iostream>
 #include <stdlib.h>
 #include <stack>
+#include <queue> 
 using namespace std;
 #define TRUE 1
 #define FALSE 0
@@ -34,6 +35,21 @@ Status CreateBiTree(BiTree &T)
 		CreateBiTree(T->rchild);
 	}
 	return OK;
+}
+int BiTreeDepth(BiTree &T)			//求树的深度 
+{
+	if(T == NULL)
+		return 0;
+	else
+	{
+		int lDepth,rDepth;
+		lDepth = BiTreeDepth(T->lchild);
+		rDepth = BiTreeDepth(T->rchild);
+		if(lDepth > rDepth)
+			return lDepth + 1;
+		else
+			return rDepth + 1;
+	 } 
 }
 void PreOrderTraverse(BiTree T)
 {
@@ -107,6 +123,25 @@ void PostOrderTraverse(BiTree T)
 		}
 	}while(!s.empty());
 }
+void LevelOrderTraverse(BiTree T)		//层次遍历 
+{
+	BiTree p;
+    p = T;
+    if (!T) {
+        return;
+    }
+    queue<BiTree> Q; 
+    Q.push(p);
+    while (!Q.empty()) {
+        p = Q.front();
+        Q.pop();
+        printf("%c ",p->data);
+        if (p->lchild)
+        	Q.push(p->lchild);
+        if (p->rchild)
+        	Q.push(p->rchild);
+    }
+}
 void PreOrderTraverse_recursion(BiTree T)
 {
 	if(T!=NULL)
@@ -149,6 +184,8 @@ int main()
 	PostOrderTraverse(T);
 	printf("\n");
 	PostOrderTraverse_recursion(T);
+	printf("\n");
+	LevelOrderTraverse(T);
 	return 0;
 }
 //ABC  DE G  F   
