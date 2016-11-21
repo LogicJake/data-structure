@@ -169,6 +169,58 @@ void PostOrderTraverse_recursion(BiTree T)    //递归后序遍历
         printf("%c ",T->data); 
     }    
 } 
+int LeafNode(BiTree T)							//求叶子结点个数
+{
+	if(T == NULL)
+		return 0;
+	if(T->lchild == NULL && T->rchild == NULL) 
+		return 1;
+	return LeafNode(T->lchild) + LeafNode(T->rchild);
+}
+void exchange(BiTree T)							//交换左右子树 
+{
+	BiTree temp = NULL;
+ 	if(T->lchild == NULL && T->rchild == NULL)
+        return;
+ 	else{
+       temp = T->lchild;
+       T->lchild = T->rchild;
+       T->rchild = temp;
+ 	}
+ 	if(T->lchild)
+      	exchange(T->lchild);
+ 	if(T->rchild)
+      	exchange(T->rchild);
+}
+Status IsCompleteBinaryTree(BiTree T) 
+{
+	bool flag = FALSE;
+	BiTree p;
+    p = T;
+    if (!T) {
+        return FALSE;
+    }
+    queue<BiTree> Q; 
+    Q.push(p);
+    while (!Q.empty()) {
+    	if(flag == TRUE)
+    	{
+    		if(p->lchild != NULL || p->rchild != NULL)
+    			return FALSE;
+		}
+        p = Q.front();
+        Q.pop();
+        if(p->lchild == NULL && p->rchild != NULL)
+        	return FALSE;
+        if((p->lchild != NULL && p->rchild == NULL) || (p->lchild == NULL && p->rchild == NULL))
+        	flag = TRUE;
+		if (p->lchild)
+        	Q.push(p->lchild);
+        if (p->rchild)
+        	Q.push(p->rchild);
+    }
+    return TRUE;
+}
 int main()
 {
 	BiTree T;
