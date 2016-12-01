@@ -199,6 +199,52 @@ void PRINT(MGraph G)
   		printf("\n");
  	}
 }
+
+//普里姆算法 begain 
+typedef struct {
+	VertexType adjvex;
+	VRType lowcost;
+}nod;
+int minimum(nod *closedge, int n){
+	int min = INT_MAX;
+	int x; 
+	for(int i = 0; i < n ; i++)
+	{
+		if(closedge[i].lowcost < min && closedge[i].lowcost != 0)
+		{
+			min = closedge[i].lowcost;
+			x = i;
+		}	
+	}
+	return x; 
+}
+void MiniSpanTree_PRIM(MGraph G, VertexType u)
+{
+	nod closedge[MAX_VERTEX_NUM];
+	int k = LocateVex(G,u); 
+	int i,j;
+	for(j = 0; j < G.vexnum; j++)
+		if(j != k)
+		{
+			closedge[j].adjvex = u;
+			closedge[j].lowcost = G.arcs[k][j].adj;
+		}
+	closedge[k].lowcost = 0;
+	for(i = 1; i < G.vexnum; i++)
+	{
+		k = minimum(closedge,G.vexnum);
+		cout<<closedge[k].adjvex<<" "<<G.vexs[k];
+		closedge[k].lowcost = 0;
+		for(j = 0; j < G.vexnum; j++)
+			if(G.arcs[k][j].adj < closedge[j].lowcost)
+			{
+				closedge[j].adjvex = G.vexs[k];
+				closedge[j].lowcost = G.arcs[k][j].adj;
+			}
+	}
+}
+//普里姆算法end
+
 int main()
 {
 	MGraph G;
