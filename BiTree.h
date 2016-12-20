@@ -51,6 +51,42 @@ int BiTreeDepth(BiTree &T)			//求树的深度
 			return rDepth + 1;
 	 } 
 }
+int BiTreeWidth(BiTree &T)
+{
+	if(T == NULL)
+		return 0;
+	int nLastLevelWidth = 0;//记录上一层的宽度  
+    int nTempLastLevelWidth = 0;  
+    int nCurLevelWidth = 0;//记录当前层的宽度  
+    int nWidth = 1;//二叉树的宽度  
+    BiTree cur;
+    queue<BiTree> q;  
+    q.push(T);
+    nLastLevelWidth = 1;
+    nWidth = 1;
+    while(!q.empty())
+    {
+   		nTempLastLevelWidth = nLastLevelWidth;  
+        while (nTempLastLevelWidth != 0)  
+        {  
+            cur = q.front();//取出队列头元素  
+            q.pop();		//将队列头元素出对  
+            if (cur->lchild != NULL)  
+            {  
+                q.push(cur->lchild);  
+            }  
+            if (cur->rchild != NULL)  
+            {  
+                q.push(cur->rchild);  
+            }  
+            nTempLastLevelWidth--;  
+        }  
+        nCurLevelWidth = q.size();  
+        nWidth = nCurLevelWidth > nWidth ? nCurLevelWidth : nWidth;  
+        nLastLevelWidth = nCurLevelWidth;  
+    }  
+    return nWidth;  
+ } 
 void PreOrderTraverse(BiTree T)
 {
 	stack<BiTree> s;
@@ -99,29 +135,31 @@ void PostOrderTraverse(BiTree T)
 	stack<stacknode> s;
 	BiTree p;
 	p = T;
-	do
+	while(p)
 	{
-		while(p != NULL)
-		{
-			x.ptr = p;
-			x.tag = 0;
-			s.push(x);
-			p = p->lchild;
-		}
-		while(!s.empty() && s.top().tag == 1)
-		{
-			x.ptr = s.top().ptr;
-			x.tag = s.top().tag;
+		x.ptr = p;
+		x.tag = 0;
+		s.push(x);
+		p = p->lchild;
+	}
+	while(!s.empty()){
+		x = s.top();
+		if(x.ptr->rchild == NULL||x.tag == 1){	//没有右子树或者右子树已经访问过 
 			s.pop();
-			p = x.ptr;
-			printf("%c ",p->data);
+			printf("%c ",x.ptr->data);
 		}
-		if(!s.empty())
-		{
+		else{
 			s.top().tag = 1;
-			p = s.top().ptr->rchild;
+			p = x.ptr->rchild;
+			while(p)
+			{
+				x.ptr = p;
+				x.tag = 0;
+				s.push(x);
+				p = p->lchild;
+			 } 
 		}
-	}while(!s.empty());
+	}
 }
 void LevelOrderTraverse(BiTree T)		//层次遍历 
 {
@@ -220,24 +258,5 @@ Status IsCompleteBinaryTree(BiTree T)
         	Q.push(p->rchild);
     }
     return TRUE;
-}
-int main()
-{
-	BiTree T;
-	CreateBiTree(T);
-	PreOrderTraverse(T);
-	printf("\n");
-	PreOrderTraverse_recursion(T);
-	printf("\n");
-	InOrderTraverse(T);
-	printf("\n");
-	InOrderTraverse_recursion(T);
-	printf("\n");
-	PostOrderTraverse(T);
-	printf("\n");
-	PostOrderTraverse_recursion(T);
-	printf("\n");
-	LevelOrderTraverse(T);
-	return 0;
 }
 //ABC  DE G  F   
