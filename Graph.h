@@ -1,6 +1,7 @@
 //无向带权网的基本操作
 #include <iostream>
 #include <queue> 
+#include <stack>
 using namespace std;
 #define OK 1
 #define ERROR 0
@@ -157,6 +158,39 @@ void DFSTraverse(MGraph G)
 	if(!visited[v])
 		DFS(G,v);
 }
+void DFSTraverse2(MGraph G)		//非递归算法
+{
+	int i,j,v;
+	VertexType temp; 
+	stack<VertexType> s;
+	for(v = 0; v < G.vexnum; v++)
+		visited[v] = FALSE;
+	for(i = 0; i < G.vexnum; i++)
+	{
+		if(!visited[i])
+		{
+			cout<<G.vexs[i]<<" ";
+			visited[i] = TRUE;
+			s.push(i);
+			while(!s.empty())
+			{
+				temp = s.top();
+				for(j = 0; j < G.vexnum; j++)
+				{
+					if(G.arcs[temp][j].adj < INFINITY && !visited[j])
+					{
+						cout<<G.vexs[j]<<" ";
+						visited[j] = TRUE;
+						s.push(j);
+						break;
+					}	
+				}
+				if(j == G.vexnum)
+					s.pop();
+			}	
+		}
+	}
+} 
 void BFSTraverse(MGraph G)
 {
 	int v;
@@ -319,7 +353,6 @@ int main()
 //	for(int i = 0; i < G.vexnum; i++)
 //		cout<<G.vexs[i]<<" ";	
 //	return 0;
- } 
 /*测试数据 
 6 8
 0 1 2 3 4 5 
