@@ -259,4 +259,16 @@ Status IsCompleteBinaryTree(BiTree T)
     }
     return TRUE;
 }
+void CopyTree(BiTree S,BiTree &T){
+    if (!S) T=NULL;
+    else{
+    	BiTree lptr,rptr;
+        CopyTree(S->lchild,lptr);//复制左子树到lptr
+        CopyTree(S->rchild,rptr);//复制右子树到rptr
+        T = (BiTree)malloc(sizeof(BiTNode));
+        T->data = S->data;
+        T->lchild = lptr;
+		T->rchild = rptr;
+    }
+}
 //ABC  DE G  F   
